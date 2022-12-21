@@ -1,0 +1,51 @@
+{
+    "name": "vasoandtim/teamup",
+    "description": "TeamUp Software",
+    "type": "project",
+    "license": "Private",
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Vasili Baramidze, Tim Anthony Alexander"
+        }
+    ],
+    "scripts": {
+        "start": "screen -dmS teamup php -S 127.0.0.1:8338 -t public",
+        "migrations": "php ./scripts/migrations.php",
+        "analyse": "php -d memory_limit=-1 vendor/bin/phpstan analyse --level 8 -c phpstan.neon",
+        "analyse-src": "@analyse src",
+        "analyse-public": "@analyse public",
+        "fix-src":   [
+            "php vendor/bin/rector process src 2>&1 >/dev/null",
+            "@cbf src"
+        ],
+        "fix-public":   [
+            "php vendor/bin/rector process public 2>&1 >/dev/null",
+            "@cbf public"
+        ],
+        "test-src": [
+            "php vendor/bin/phpunit src/tests"
+        ],
+        "test-public": [
+            "php vendor/bin/phpunit public/tests"
+        ],
+        "test": [
+            "@test-src",
+            "@test-public"
+        ]
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.15.1"
+    },
+    "require": {
+        "ramsey/uuid": "^4.6",
+        "ext-pdo": "*",
+        "phpstan/phpstan": "^1.9"
+    }
+}

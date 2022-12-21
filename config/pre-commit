@@ -1,0 +1,113 @@
+#!/bin/bash
+
+echo "Copyright 2022, TEAMUP"
+
+echo "-----------------------------"
+echo "--- Composer Dumpautoload --- "
+composer dumpautoload
+echo -e "-----------------------------\n"
+
+echo "-----------------------------"
+echo "--------- Migration --------- "
+echo "Executing migrations..."
+composer migrations
+echo -e "-----------------------------\n"
+
+hasPublicChanges=$(git diff --cached --name-only --diff-filter=ACMR  | grep -c "^public/")
+hasSrcChanges=$(git diff --cached --name-only --diff-filter=ACMR  | grep -c "^src/")
+
+echo "-----------------------------"
+echo "-------- Changes in: --------"
+
+if [[ "${hasSrcChanges}" -gt 0 ]]; then
+  echo "SRC"
+fi
+if [[ "${hasPublicChanges}" -gt 0 ]]; then
+  echo "PUBLIC"
+fi
+
+if [[ "${hasSrcChanges}" -eq 0 && "${hasPublicChanges}" -eq 0 ]]; then
+  echo "0 CHANGES"
+fi
+echo -e "-----------------------------\n"
+
+if [[ "${hasPublicChanges}" -gt 0 ]]; then
+    echo "-----------------------------"
+    echo "--------- Public ----------"
+    echo "## Fix"
+    composer fix-public &>/dev/null
+    status=$?
+    if [ $status -ne 0 ]; then
+      git add .
+    fi
+    composer fix-public &>/dev/null
+    status=$?
+    if [ $status -ne 0 ]; then
+      echo ">>>> ERROR: Public could not be fixed"
+      # Analyse-public
+      echo "## Analysis"
+      composer analyse-public
+      exit 1
+    else
+      echo ">>>> OK: Public fixed"
+    fi
+    echo "-----------------------------"
+    echo "## Public tests"
+    composer test-public &>/dev/null
+    status=$?
+    if [ $status -ne 0 ]; then
+      composer test-public
+      echo ">>>> ERROR: Public tests failed"
+      exit 1
+    else
+      echo ">>>> OK: Public tests passed"
+    fi
+    echo -e "-----------------------------\n"
+fi
+
+if [[ "${hasSrcChanges}" -gt 0 ]]; then
+    echo "-----------------------------"
+    echo "------------ SRC ------------"
+    echo "## Fix"
+    composer fix-src &>/dev/null
+    status=$?
+    if [ $status -ne 0 ]; then
+      git add .
+    fi
+    composer fix-src &>/dev/null
+    status=$?
+    if [ $status -ne 0 ]; then
+      echo ">>>> ERROR: SRC could not be fixed"
+      # Analyse-src
+      echo "## Analysis"
+      composer analyse-src
+      exit 1
+    else
+      echo ">>>> OK: SRC fixed"
+    fi
+    echo "-----------------------------"
+    echo "## SRC tests"
+    composer test-src &>/dev/null
+    status=$?
+    if [ $status -ne 0 ]; then
+      composer test-src
+      echo ">>>> ERROR: SRC tests failed"
+      exit 1
+    else
+      echo ">>>> OK: SRC tests passed"
+    fi
+    echo -e "-----------------------------\n"
+fi
+
+echo '#!/bin/bash'>.git/hooks/pre-commit
+echo './config/pre-commit'>>.git/hooks/pre-commit
+
+chmod +x .git/hooks/pre-commit
+status=$?
+if [ $status -ne 0 ]; then
+  sudo chmod +x .git/hooks/pre-commit
+fi
+
+echo "-----------------------------"
+echo ">>>> OK: PRE-COMMIT finished"
+echo -e "-----------------------------\n"

@@ -1,0 +1,20 @@
+{
+    "pingMessage": {
+        "english": "This is a pong message.",
+        "german": "Dies ist eine Pong Nachricht.",
+        "french": "Ceci est un message pong.",
+        "spanish": "Este es un mensaje pong.",
+        "italian": "Questo \u00e8 un messaggio pong.",
+        "portuguese": "Esta \u00e9 uma mensagem pong.",
+        "georgian": "\u10d4\u10e1 \u10d0\u10e0\u10d8\u10e1 \u10de\u10dd\u10dc\u10d2 \u10e8\u10d4\u10e2\u10e7\u10dd\u10d1\u10d8\u10dc\u10d4\u10d1\u10d0."
+    },
+    "pong": {
+        "english": "pong",
+        "german": "Pong",
+        "french": "pong",
+        "spanish": "pong",
+        "italian": "pong",
+        "portuguese": "pong",
+        "georgian": "\u10de\u10dd\u10dc\u10d2"
+    }
+}

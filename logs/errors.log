@@ -1,0 +1,5 @@
+[2022-12-19 19:50:30] Error: Class "src\module\QueryBuilder\QueryBuilder" not found in /Users/timanthonyalexander/teamup/src/controller/Ping/PingController.php on line 16
+[2022-12-19 19:50:40] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'teamup.test' doesn't exist in /Users/timanthonyalexander/teamup/src/module/BetterSQL/BetterSQL.php on line 188
+[2022-12-19 19:51:12] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'teamup.test' doesn't exist in /Users/timanthonyalexander/teamup/src/module/BetterSQL/BetterSQL.php on line 188
+[2022-12-19 19:51:16] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'teamup.test' doesn't exist in /Users/timanthonyalexander/teamup/src/module/BetterSQL/BetterSQL.php on line 188
+[2022-12-19 19:51:58] PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'teamup.test' doesn't exist in /Users/timanthonyalexander/teamup/src/module/BetterSQL/BetterSQL.php on line 188
